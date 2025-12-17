@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>rpn使用文档2.nim</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐳</text></svg>">
+  <meta content="text/html; charset=utf-8" http-equiv="content-type">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="nimib 0.3.12" name="generator">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.min.css">
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/pietroppeter/nimib/assets/atom-one-light.css'>
+    <script src="https://cdn.jsdelivr.net/gh/pietroppeter/nimib@main/assets/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+  <style>
+.nb-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nb-small {
+  font-size: 0.8rem;
+}
+button.nb-small {
+  float: right;
+  padding: 2px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+section#source {
+  display:none
+}
+pre > code {
+  font-size: 1.2em;
+}
+.nb-output {
+  line-height: 1.15;
+}
+figure {
+  margin: 2rem 0;
+}
+figcaption {
+  text-align: center;
+}
+  
+</style>
+  
+</head>
+<body>
+<header>
+<div class="nb-box">
+  <span><a href=".">🏡</a></span>
+  <span><code>rpn使用文档2.nim</code></span>
+  <span></span>
+</div>
+<hr>
+</header><main>
+<p>RPN计算器使用说明</p>
+<p>一.安装
+确保你已经安装了 g++ 编译器。如果你使用的是 Linux 系统，可以通过以下命令进行安装： sudo apt update
+sudo apt install g++</p>
+<p>二.编译
+可以使用以下命令进行编译： g++ -o rpn_calc rpn_calc.cpp</p>
+<p>三.运行
+编译成功后，运行以下命令启动程序： ./rpn_calc</p>
+<p>四. 基本使用示例
+启动程序后，输入一个逆波兰表达式（例如 5 5 +）并按回车键，程序会计算并显示结果。
+例：&gt; 3 4 + 2 * 7 /
+结果: 7
+该示例计算 ( 3 + 4 ) * 2 / 7 ，并输出结果 7
+输入 q 退出程序。</p>
+<p>五. 所有支持的操作说明
+该程序支持以下基本操作：
+加法 +：计算两个操作数的和。
+减法 -：计算两个操作数的差。
+乘法 *：计算两个操作数的积。
+除法 /：计算两个操作数的商，除数不能为零。
+平方根 sqrt：计算栈顶元素的平方根，要求输入的数为非负数。
+操作数包括整数和浮点数</p>
+<p>六. 错误代码和异常说明
+栈为空错误
+当栈为空时按回车键，程序会抛出异常并显示以下错误信息：
+错误: 栈为空。
+除零错误
+当执行除法操作时，如果除数为零，程序会抛出除零异常：
+错误: 除数不能为零。
+无效输入错误
+当输入的内容无法解析为数字或有效操作符时，会抛出异常并显示以下错误信息：
+错误: 无效输入: x
+平方根错误
+当尝试对负数进行平方根计算时，会抛出异常并显示：
+错误: 不能对负数求平方根。
+七、输入输出
+示例1：加法和乘法</p>
+<p>3.8 4+2.97/ 结果：3.23143 计算过程：（3.8 + 4） 2.9 / 7 = 7</p>
+<p>示例2：除法和平方根</p>
+<p>9 3 / sqrt 结果：1.73205 计算过程：9 / 3 = 3，然后 sqrt( 3 ) 输出 1.73205</p>
+<p>示例3：除零错误</p>
+<p>5 0 / 错误：除数不能为零。</p>
+<p>示例4：平方根错误</p>
+<p>-9 sqrt 错误：不能对负数求平方根</p>
+<p>示例5：无效输入错误</p>
+<p>8 x + 错误：无效输入x</p>
+<p>栈空错误</p>
+<p>结果：错误：栈为空</p>
+<p>这份文档涵盖了如何安装、编译和使用逆波兰表示法计算器，包括所有支持的操作、常见错误</p>
+</main>
+<footer>
+<div class="nb-box">
+  <span><span class="nb-small">made with <a href="https://pietroppeter.github.io/nimib/">nimib 🐳</a></span></span>
+  <span></span>
+  <span><button class="nb-small" id="show" onclick="toggleSourceDisplay()">Show Source</button></span>
+</div>
+</footer>
+<section id="source">
+<pre><code class="nohighlight nim hljs"><span class="hljs-keyword">import</span> strformat, strutils
+<span class="hljs-keyword">import</span> nimib
+
+nbInit
+
+nbText: <span class="hljs-string">&quot;&quot;&quot;RPN计算器使用说明
+
+一.安装
+确保你已经安装了 g++ 编译器。如果你使用的是 Linux 系统，可以通过以下命令进行安装： sudo apt update
+sudo apt install g++
+
+二.编译
+可以使用以下命令进行编译： g++ -o rpn_calc rpn_calc.cpp
+
+三.运行
+编译成功后，运行以下命令启动程序： ./rpn_calc
+
+四. 基本使用示例
+启动程序后，输入一个逆波兰表达式（例如 5 5 +）并按回车键，程序会计算并显示结果。
+例：&gt; 3 4 + 2 * 7 /
+结果: 7
+该示例计算 ( 3 + 4 ) * 2 / 7 ，并输出结果 7
+输入 q 退出程序。
+
+五. 所有支持的操作说明
+该程序支持以下基本操作：
+加法 +：计算两个操作数的和。
+减法 -：计算两个操作数的差。
+乘法 *：计算两个操作数的积。
+除法 /：计算两个操作数的商，除数不能为零。
+平方根 sqrt：计算栈顶元素的平方根，要求输入的数为非负数。
+操作数包括整数和浮点数
+
+六. 错误代码和异常说明
+栈为空错误
+当栈为空时按回车键，程序会抛出异常并显示以下错误信息：
+错误: 栈为空。
+除零错误
+当执行除法操作时，如果除数为零，程序会抛出除零异常：
+错误: 除数不能为零。
+无效输入错误
+当输入的内容无法解析为数字或有效操作符时，会抛出异常并显示以下错误信息：
+错误: 无效输入: x
+平方根错误
+当尝试对负数进行平方根计算时，会抛出异常并显示：
+错误: 不能对负数求平方根。
+七、输入输出
+示例1：加法和乘法
+
+3.8 4+2.97/ 结果：3.23143 计算过程：（3.8 + 4） 2.9 / 7 = 7
+
+示例2：除法和平方根
+
+9 3 / sqrt 结果：1.73205 计算过程：9 / 3 = 3，然后 sqrt( 3 ) 输出 1.73205
+
+示例3：除零错误
+
+5 0 / 错误：除数不能为零。
+
+示例4：平方根错误
+
+-9 sqrt 错误：不能对负数求平方根
+
+示例5：无效输入错误
+
+8 x + 错误：无效输入x
+
+栈空错误
+
+结果：错误：栈为空
+
+这份文档涵盖了如何安装、编译和使用逆波兰表示法计算器，包括所有支持的操作、常见错误
+ &quot;&quot;&quot;</span>
+
+nbSave</code></pre>
+</section><script>
+function toggleSourceDisplay() {
+  var btn = document.getElementById("show")
+  var source = document.getElementById("source");
+  if (btn.innerHTML=="Show Source") {
+    btn.innerHTML = "Hide Source";
+    source.style.display = "block";
+  } else {
+    btn.innerHTML = "Show Source";
+    source.style.display = "none";
+  }
+}
+</script></body>
+</html>
