@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPN计算器使用说明</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 0 20px; line-height: 1.6; }
+        h1, h2 { color: #2c3e50; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .note { color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>RPN计算器使用说明</h1>
+
+    <h2>一、安装</h2>
+    <p>确保你已经安装了g++编译器。如果使用Linux系统，可通过以下命令安装：</p>
+    <pre>sudo apt install g++</pre>
+
+    <h2>二、编译</h2>
+    <p>使用以下命令编译：</p>
+    <pre>g++ -o rpn_calc rpn_calc.cpp</pre>
+
+    <h2>三、运行</h2>
+    <p>编译成功后，运行以下命令启动程序：</p>
+    <pre>./rpn_calc</pre>
+
+    <h2>四、基本使用示例</h2>
+    <p>启动程序后，输入一个逆波兰表达式（例如 5 5 +）并按回车键，程序会计算并显示结果。</p>
+    <p>例：> 3 4 + 2 * 7 /</p>
+    <p>结果：7</p>
+    <p>该示例计算(3 + 4) * 2 / 7，并输出结果7</p>
+    <p>输入 q 退出程序。</p>
+
+    <h2>五、所有支持的操作说明</h2>
+    <p>该程序支持以下基本操作：</p>
+    <ul>
+        <li>加法 +：计算两个操作数的和。</li>
+        <li>减法 -：计算两个操作数的差。</li>
+        <li>乘法 *：计算两个操作数的积。</li>
+        <li>除法 /：计算两个操作数的商，除数不能为零。</li>
+        <li>平方根 sqrt：计算栈顶元素的平方根，要求输入的数为非负数。</li>
+    </ul>
+    <p>操作数包括整数和浮点数。</p>
+
+    <h2>六、错误代码和异常说明</h2>
+    <p class="note">栈为空错误</p>
+    <p>当栈为空时按回车键，程序会抛出异常并显示：<br>错误: 栈为空。</p>
+
+    <p class="note">除零错误</p>
+    <p>当执行除法操作时，如果除数为零，程序会抛出除零异常：<br>错误: 除数不能为零。</p>
+
+    <p class="note">无效输入错误</p>
+    <p>当输入的内容无法解析为数字或有效操作符时，会抛出异常并显示：<br>错误: 无效输入: x</p>
+</body>
+</html>
